@@ -9,6 +9,11 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip crash;
     [SerializeField] AudioClip success;
 
+    [SerializeField] ParticleSystem crashparticle;
+    [SerializeField] ParticleSystem successparticle;
+
+    
+
     [SerializeField] float loadLevelDelay;
 
     bool istransition = false;
@@ -48,10 +53,12 @@ public class CollisionHandler : MonoBehaviour
         if (status == 0)
         {
             playAudio(crash);
+            crashparticle.Play();
             Invoke("RestartLevel", loadLevelDelay);
         }
         else if (status == 1) 
         {
+            successparticle.Play();
             playAudio(success);
             Invoke("LoadNextLevel",loadLevelDelay);
         }
