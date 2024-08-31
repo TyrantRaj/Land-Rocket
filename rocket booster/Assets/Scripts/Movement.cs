@@ -8,6 +8,9 @@ public class Movement : MonoBehaviour
     [SerializeField] float thrustAmount = 1f;
     [SerializeField] float rotateAmount = 1f;
     AudioSource audioSource;
+    [SerializeField] AudioClip mainengine;
+
+    bool isAlive;
 
     private void Start()
     {
@@ -29,7 +32,7 @@ public class Movement : MonoBehaviour
             body.AddRelativeForce(Vector3.up * thrustAmount);
 
             if (!audioSource.isPlaying) {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainengine);
             }
             
         }
@@ -39,6 +42,7 @@ public class Movement : MonoBehaviour
         }
         
     }
+
 
     private void ProcessRotation()
     {
