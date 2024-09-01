@@ -1,0 +1,67 @@
+{
+    "name": "RocketInput",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "91a5bf73-6175-47e7-9303-cbea65360004",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "17edd8ba-ea51-44e5-94a1-f4dd69539f95",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "5b7d95bb-d119-4d57-9977-1906d1a63944",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "ec88e28c-43f9-4282-aa6f-d2e98fef21a5",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "5e9e4284-0a4a-4ce5-8af7-2147c3e0eb35",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "a591b1f4-f681-4f3e-82ff-e7f220c6123f",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

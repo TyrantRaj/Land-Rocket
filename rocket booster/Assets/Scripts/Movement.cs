@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    PlayerInput input;
+    InputAction moveAction;
+
     [SerializeField] ParticleSystem mainThrottlePs;
     [SerializeField] ParticleSystem rightps;
     [SerializeField] ParticleSystem leftps;
@@ -17,23 +21,29 @@ public class Movement : MonoBehaviour
     [SerializeField] AudioClip mainengine;
 
     bool isAlive;
+    float num;
 
     private void Start()
     {
+        input = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
+        moveAction = input.actions.FindAction("Move");
         body = GetComponent<Rigidbody>();
+
     }
 
     // Update is caled once per frame
     void FixedUpdate()
     {
+        Debug.Log(moveAction.ReadValue<Vector2>());
+
         ProcessThrust();
         ProcessRotation();
     }
 
     private void ProcessThrust()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) || moveAction.ReadValue<Vector2>().y == 1)
         {
             body.AddRelativeForce(Vector3.up * thrustAmount);
 
@@ -59,7 +69,7 @@ public class Movement : MonoBehaviour
     {
         body.freezeRotation = true;
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) || moveAction.ReadValue<Vector2>().x == -1)
         {
             transform.Rotate(Vector3.forward * rotateAmount);
 
@@ -71,7 +81,7 @@ public class Movement : MonoBehaviour
             }
 
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) || moveAction.ReadValue<Vector2>().x == 1)
         {
             transform.Rotate(-Vector3.forward * rotateAmount);
 
