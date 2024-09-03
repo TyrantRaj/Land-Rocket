@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     InputAction moveLeft;
     InputAction Throttle;
 
+    [SerializeField]GameObject Planet;
     [SerializeField] ParticleSystem mainThrottlePs;
     [SerializeField] ParticleSystem rightps;
     [SerializeField] ParticleSystem leftps;
@@ -34,6 +35,7 @@ public class Movement : MonoBehaviour
         Throttle = input.actions.FindAction("throttle");
         body = GetComponent<Rigidbody>();
 
+
     }
 
     // Update is caled once per frame
@@ -50,6 +52,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) || Throttle.IsInProgress())
         {
             body.AddRelativeForce(Vector3.up * thrustAmount);
+
 
             if (!audioSource.isPlaying) {
                 audioSource.PlayOneShot(mainengine);
@@ -76,6 +79,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || moveLeft.IsInProgress())
         {
             transform.Rotate(Vector3.forward * rotateAmount);
+            Planet.transform.Rotate(Vector3.forward * rotateAmount);
 
             if (!rightps.isPlaying)
             {
@@ -88,6 +92,7 @@ public class Movement : MonoBehaviour
         else if (Input.GetKey(KeyCode.D) || moveRight.IsInProgress() )
         {
             transform.Rotate(-Vector3.forward * rotateAmount);
+            Planet.transform.Rotate(-Vector3.forward * rotateAmount);
 
             if (!leftps.isPlaying)
             {
