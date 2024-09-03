@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     PlayerInput input;
-    InputAction moveAction;
+    InputAction moveRight;
+    InputAction moveLeft;
+    InputAction Throttle;
 
     [SerializeField] ParticleSystem mainThrottlePs;
     [SerializeField] ParticleSystem rightps;
@@ -27,7 +29,9 @@ public class Movement : MonoBehaviour
     {
         input = GetComponent<PlayerInput>();
         audioSource = GetComponent<AudioSource>();
-        moveAction = input.actions.FindAction("Move");
+        moveRight = input.actions.FindAction("right");
+        moveLeft = input.actions.FindAction("left");
+        Throttle = input.actions.FindAction("throttle");
         body = GetComponent<Rigidbody>();
 
     }
@@ -35,7 +39,7 @@ public class Movement : MonoBehaviour
     // Update is caled once per frame
     void FixedUpdate()
     {
-        Debug.Log(moveAction.ReadValue<Vector2>());
+        
 
         ProcessThrust();
         ProcessRotation();
@@ -43,7 +47,7 @@ public class Movement : MonoBehaviour
 
     private void ProcessThrust()
     {
-        if (Input.GetKey(KeyCode.Space) || moveAction.ReadValue<Vector2>().y == 1)
+        if (Input.GetKey(KeyCode.Space) || Throttle.IsInProgress())
         {
             body.AddRelativeForce(Vector3.up * thrustAmount);
 
@@ -69,7 +73,7 @@ public class Movement : MonoBehaviour
     {
         body.freezeRotation = true;
 
-        if (Input.GetKey(KeyCode.A) || moveAction.ReadValue<Vector2>().x == -1)
+        if (Input.GetKey(KeyCode.A) || moveLeft.IsInProgress())
         {
             transform.Rotate(Vector3.forward * rotateAmount);
 
@@ -81,7 +85,7 @@ public class Movement : MonoBehaviour
             }
 
         }
-        else if (Input.GetKey(KeyCode.D) || moveAction.ReadValue<Vector2>().x == 1)
+        else if (Input.GetKey(KeyCode.D) || moveRight.IsInProgress() )
         {
             transform.Rotate(-Vector3.forward * rotateAmount);
 
