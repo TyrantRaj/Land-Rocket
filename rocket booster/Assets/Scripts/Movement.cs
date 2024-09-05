@@ -49,65 +49,100 @@ public class Movement : MonoBehaviour
 
     private void ProcessThrust()
     {
+        // Apply upward force when space or throttle is pressed
         if (Input.GetKey(KeyCode.Space) || Throttle.IsInProgress())
         {
+            // Add upward force relative to the rocket's orientation
             body.AddRelativeForce(Vector3.up * thrustAmount);
 
-
-            if (!audioSource.isPlaying) {
+            if (!audioSource.isPlaying)
+            {
                 audioSource.PlayOneShot(mainengine);
-                
             }
-            if (!mainThrottlePs.isPlaying) {
+
+            if (!mainThrottlePs.isPlaying)
+            {
                 mainThrottlePs.Play();
             }
-            
+
+            // Check if rotation input is also being pressed
+            if (Input.GetKey(KeyCode.A) || moveLeft.IsInProgress())
+            {
+                // Rotate the rocket and the planet when throttle + left input is pressed
+                RotatePlanetAndRocket(Vector3.forward);
+            }
+            else if (Input.GetKey(KeyCode.D) || moveRight.IsInProgress())
+            {
+                // Rotate the rocket and the planet when throttle + right input is pressed
+                RotatePlanetAndRocket(-Vector3.forward);
+            }
         }
         else
         {
+            // Stop audio and particles when thrust is not applied
             audioSource.Stop();
             mainThrottlePs.Stop();
         }
-        
     }
 
+    private void RotatePlanetAndRocket(Vector3 rotationDirection)
+    {
+        // Rotate the rocket in place around its local axis
+        transform.Rotate(rotationDirection * rotateAmount * Time.deltaTime);
+
+        // Rotate the planet along the Y-axis
+        Planet.transform.Rotate(Vector3.up * rotateAmount * Time.deltaTime);
+    }
 
     private void ProcessRotation()
     {
+        // Disable automatic rotation from the physics system
         body.freezeRotation = true;
 
-        if (Input.GetKey(KeyCode.A) || moveLeft.IsInProgress())
+        // Only rotate when thrust is being applied
+        if (!(Input.GetKey(KeyCode.Space) || Throttle.IsInProgress()))
         {
-            transform.Rotate(Vector3.forward * rotateAmount);
-            Planet.transform.Rotate(Vector3.forward * rotateAmount);
-
-            if (!rightps.isPlaying)
+            // If no thrust, handle normal rotation without planet rotation
+            if (Input.GetKey(KeyCode.A) || moveLeft.IsInProgress())
             {
-                rightps.Play();
-                middleps1.Play();
-                middleps2.Play();
+                // Rotate the rocket left without affecting the planet
+                transform.Rotate(Vector3.forward * rotateAmount * Time.deltaTime);
+
+                if (!rightps.isPlaying)
+                {
+                    rightps.Play();
+                    middleps1.Play();
+                    middleps2.Play();
+                }
             }
-
-        }
-        else if (Input.GetKey(KeyCode.D) || moveRight.IsInProgress() )
-        {
-            transform.Rotate(-Vector3.forward * rotateAmount);
-            Planet.transform.Rotate(-Vector3.forward * rotateAmount);
-
-            if (!leftps.isPlaying)
+            else if (Input.GetKey(KeyCode.D) || moveRight.IsInProgress())
             {
-                leftps.Play();
-                middleps1.Play();
-                middleps2.Play();
+                // Rotate the rocket right without affecting the planet
+                transform.Rotate(-Vector3.forward * rotateAmount * Time.deltaTime);
+
+                if (!leftps.isPlaying)
+                {
+                    leftps.Play();
+                    middleps1.Play();
+                    middleps2.Play();
+                }
+            }
+            else
+            {
+                // Stop the particle effects if no rotation inputs are detected
+                rightps.Stop();
+                leftps.Stop();
+                middleps1.Stop();
+                middleps2.Stop();
             }
         }
-        else { 
-            rightps.Stop();
-            leftps.Stop();
-            middleps1.Stop();
-            middleps2.Stop();
-        }
 
+        // Re-enable automatic rotation
         body.freezeRotation = false;
     }
+
+
+
+
+
 }
